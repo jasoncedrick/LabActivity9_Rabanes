@@ -11,14 +11,14 @@ class VaccinationSeeder extends Seeder
     {
         // NBA player names with fictional vaccination records for the classroom demonstration.
         $rows = [
-            ['LeBron James', 'Davao City', 'BCG', '1st dose', '2026-11-03', 'Scheduled'],
-            ['Stephen Curry', 'Davao City', 'Pentavalent', '2nd dose', '2026-11-05', 'Scheduled'],
-            ['Kevin Durant', 'Davao City', 'OPV', '3rd dose', '2026-10-16', 'Done'],
-            ['Giannis Antetokounmpo', 'Davao City', 'MMR', '1st dose', '2026-10-22', 'Overdue'],
-            ['Luka Doncic', 'Davao City', 'Anti-Flu', 'Annual', '2026-10-24', 'Overdue'],
-            ['Nikola Jokic', 'Davao City', 'Hepatitis B', '1st dose', config('bakuna.birthday') ?: '2026-11-12', 'Scheduled'],
-            ['Jayson Tatum', 'Davao City', 'MMR', '2nd dose', '2026-10-12', 'Done'],
-            ['Anthony Edwards', 'Davao City', 'OPV', '1st dose', '2026-11-09', 'Scheduled'],
+            ['LeBron James', 'Purok 1', 'BCG', '1st dose', '2026-11-03', 'Scheduled'],
+            ['Stephen Curry', 'Purok 2', 'Pentavalent', '2nd dose', '2026-11-05', 'Scheduled'],
+            ['Kevin Durant', 'Purok 3', 'OPV', '3rd dose', '2026-10-16', 'Done'],
+            ['Giannis Antetokounmpo', 'Purok 1', 'MMR', '1st dose', '2026-10-22', 'Overdue'],
+            ['Luka Doncic', 'Purok 4', 'Anti-Flu', 'Annual', '2026-10-24', 'Overdue'],
+            ['Nikola Jokic', 'Purok 2', 'Hepatitis B', '1st dose', config('bakuna.birthday') ?: '2026-11-12', 'Scheduled'],
+            ['Jayson Tatum', 'Purok 3', 'MMR', '2nd dose', '2026-10-12', 'Done'],
+            ['Anthony Edwards', 'Purok 4', 'OPV', '1st dose', '2026-11-09', 'Scheduled'],
         ];
         foreach ($rows as [$name, $purok, $vaccine, $dose, $date, $status]) {
             Vaccination::updateOrCreate(
