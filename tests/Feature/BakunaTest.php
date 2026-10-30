@@ -27,7 +27,7 @@ class BakunaTest extends TestCase
         $this->get('/dashboard')->assertOk()->assertSee('Bakuna Tracker - Purok Rabanes')
             ->assertSee('2 overdue vaccination(s)')->assertSee('Hi, '.config('bakuna.first_name'))
             ->assertViewHas('stats', fn ($stats) => array_column($stats, 'value') === [8, 2, 4, 2]);
-        $this->get('/schedule')->assertOk()->assertSeeInOrder(['Amara Bautista', 'Sofia Dizon', 'Liam Mercado']);
+        $this->get('/schedule')->assertOk()->assertSeeInOrder(['Jayson Tatum', 'Kevin Durant', 'Giannis Antetokounmpo']);
         $this->post('/logout')->assertRedirect('/login');
         $this->assertGuest();
         $this->get('/schedule')->assertRedirect('/login');

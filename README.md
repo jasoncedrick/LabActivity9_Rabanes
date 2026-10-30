@@ -36,7 +36,7 @@ npm.cmd run build
 - Dashboard: Bakuna Tracker - Purok Rabanes
 - Birthday appointment: November 23, 2026 (Hepatitis B)
 
-These are classroom demo credentials. Residents are fictional. This lab displays seeded records; editing appointments is outside its scope.
+These are classroom demo credentials. Demo residents use NBA player names; all vaccination details are fictional. This lab displays seeded records; editing appointments is outside its scope.
 
 ## How it works
 
