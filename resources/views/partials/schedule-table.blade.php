@@ -5,7 +5,7 @@
             <tr>
                 <th scope="col" class="px-5 py-4">#</th>
                 <th scope="col" class="px-5 py-4">Resident</th>
-                <th scope="col" class="px-5 py-4">Purok</th>
+                <th scope="col" class="px-5 py-4">Address</th>
                 <th scope="col" class="px-5 py-4">Vaccine / dose</th>
                 <th scope="col" class="px-5 py-4">Date</th>
                 <th scope="col" class="px-5 py-4">Status</th>
