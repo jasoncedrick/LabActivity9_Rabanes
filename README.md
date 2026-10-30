@@ -1,66 +1,76 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# LabActivity9_Rabanes
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Barangay Bakuna Tracker for Matina Crossing, Davao City. Built with Laravel 12, Blade layouts/components, SQLite, Tailwind CSS 3, PostCSS and Vite.
 
-## About Laravel
+## Run locally
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Use PHP 8.4+, Composer and Node.js 22+ (the locked PHP dependencies were installed on PHP 8.4).
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+```sh
+composer install
+cp .env.example .env
+php artisan key:generate
+php -r "file_exists('database/database.sqlite') || touch('database/database.sqlite');"
+php artisan migrate:fresh --seed
+npm install
+npm run build
+php artisan serve
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+On Windows PowerShell, use `Copy-Item .env.example .env` instead of `cp`.
+Open http://127.0.0.1:8000. For development, run `npm run dev` in a second terminal alongside `php artisan serve`.
+The production build creates `public/build/manifest.json`; build assets are generated locally and excluded from Git.
 
-## Learning Laravel
+This computer has portable Node at `$env:LOCALAPPDATA\bakuna-tools\node-v22.16.0-win-x64`. If npm is unavailable in PowerShell, run:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```powershell
+$env:PATH = "$env:LOCALAPPDATA\bakuna-tools\node-v22.16.0-win-x64;$env:PATH"
+npm.cmd run build
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Demo login
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Email: `nurse.rabanes@bakuna.test`
+- Password: `bakuna2026`
+- Health worker: Jason Cedirck
+- Dashboard: Bakuna Tracker - Purok Rabanes
+- Birthday appointment: November 23, 2026 (Hepatitis B)
 
-## Laravel Sponsors
+These are classroom demo credentials. Residents are fictional. This lab displays seeded records; editing appointments is outside its scope.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## How it works
 
-### Premium Partners
+[DashboardController](app/Http/Controllers/DashboardController.php) loads vaccinations by date and calculates Total, Done, Scheduled and Overdue counts.
+[The layout](resources/views/layouts/app.blade.php) shares navigation, footer and Vite assets across login, dashboard and schedule views.
+[Stat cards](resources/views/components/stat-card.blade.php) use props; [panels](resources/views/components/panel.blade.php) use a title prop and a slot.
+[The table](resources/views/partials/schedule-table.blade.php) uses `@forelse`, `@empty`, `$loop` and `@unless`. Blade escapes resident data.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Both data pages require authentication. Login validates credentials and regenerates the session. Logout uses POST with CSRF protection and invalidates the session.
+The alert banner prioritizes overdue records, then the stock notice, then “All clear”. To demonstrate the stock branch, set `BAKUNA_OUT_OF_STOCK=true` and remove overdue statuses in a disposable database. Automated tests cover all branches without changing your local records.
 
-## Contributing
+Personalization is in [.env.example](.env.example), copied into your local environment. After changing it, run `php artisan config:clear` and `php artisan db:seed`. The seeder updates its demo rows without duplicating them.
+`php artisan migrate:fresh --seed` resets the entire local database.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Verify
 
-## Code of Conduct
+```sh
+npm run build
+php artisan test
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Tests use in-memory SQLite and cover protected pages, login failures, login/logout, database counts, vaccine coverage, birthday configuration, alerts, empty schedules and escaped output.
 
-## Security Vulnerabilities
+## Submission
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Repository: https://github.com/jasoncedrick/LabActivity9_Rabanes (the repository name supplied for this project).
+The PDF spells the name with a hyphen, `LabActivity9-Rabanes`; confirm the accepted naming convention before submission.
+Push later changes with:
 
-## License
+```sh
+git push origin main
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Submit the public repository link on Moodle. Moodle submission must still be completed.
+Do not upload `.env`, `vendor/`, `node_modules/` or the SQLite database.
+
+Implementation assistance: Codex helped scaffold, implement and test this project. Review the controllers, Blade directives and asset setup before the lab defense; the commits record actual implementation stages.
